@@ -1,0 +1,6 @@
+[package]
+name = "annealing_redux"
+version = "0.1.0"
+authors = ["Diego Carrillo <dailexgo@gmail.com>"]
+
+[dependencies]
