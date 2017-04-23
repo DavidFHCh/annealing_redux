@@ -17,5 +17,6 @@ la distancia promedio de las ciudades así como la distancia máxima, junto con 
 
 Por lo demás, el proceso de recocido es casi una copia exacta del presentado en el proyecto de arriba, así como el uso del archivo de configuración.
 
-Para correr el proyecto, solo hace falta hacer `cargo run --release` y ver la magia ocurrir.
+Para correr el proyecto, solo hace falta hacer `cargo run --release` y ver la magia ocurrir. (No olvidar que en la carpeta raíz del proyecto debe existir
+un archivo hoc.db con la base de datos de las ciudades).
 La configuración actual guardada en el repositorio está configurada para encontrar la solución óptima. En mi computadora, acaba como en 5 segundos.
