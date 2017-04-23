@@ -3,4 +3,15 @@ name = "annealing_redux"
 version = "0.1.0"
 authors = ["Diego Carrillo <dailexgo@gmail.com>"]
 
+[lib]
+name = "annealing_redux"
+path = "src/lib.rs"
+
+[[bin]]
+name = "annealing_redux_bin"
+path = "src/main.rs"
+
 [dependencies]
+rusqlite = "0.10.0"
+rand = "0.3.15"
+config = { git = "https://github.com/mehcode/config-rs" }
