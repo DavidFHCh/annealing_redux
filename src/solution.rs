@@ -10,18 +10,20 @@ pub struct Solution<'a> {
     pub cost: f64,
     pub avg_d: f64,
     pub max_d: f64,
-    pub dists: &'a [[f64; 278]; 278]
+    pub dists: &'a [[f64; 278]; 278],
+    pub seed: u32
 }
 
 impl<'a> Solution<'a> {
 
-    pub fn new(path: Vec<u16>, dist: &[[f64; 278]; 278]) -> Solution {
+    pub fn new(path: Vec<u16>, dist: &[[f64; 278]; 278], seed: u32) -> Solution {
         let mut s = Solution{
             path: path,
             cost: 0.0,
             avg_d: 0.0,
             max_d: 0.0,
-            dists: dist
+            dists: dist,
+            seed: seed
         };
 
         let (max, avg) = s.max_dist();
@@ -40,7 +42,8 @@ impl<'a> Solution<'a> {
             cost: new_c,
             avg_d: self.avg_d,
             max_d: self.max_d,
-            dists: self.dists
+            dists: self.dists,
+            seed: self.seed
         }
     }
 
@@ -147,6 +150,6 @@ impl<'a> Solution<'a> {
 
 impl<'a> fmt::Display for Solution<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}\n cost:{} \tfeasible: {}", self.path, self.cost, self.feasible())
+        write!(f, "{:?}\n cost:{} \tfeasible: {} \tseed: {}", self.path, self.cost, self.feasible(), self.seed)
     }
 }

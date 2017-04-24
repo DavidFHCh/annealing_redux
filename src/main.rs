@@ -12,7 +12,9 @@ fn main() {
     let annealers = from_config(&dists);
     for mut annealer in annealers {
         let solutions = annealer.threshold_accepting();
-        println!("{}", solutions[solutions.len() - 1]);
+        if solutions[solutions.len()-1].feasible() {
+            println!("{}", solutions[solutions.len() - 1]);
+        }
     }
 }
 

@@ -19,7 +19,8 @@ impl<'a> Annealer<'a> {
     pub fn new(mut city_ids: Vec<u16>, bs: u32, seed: [u32; 4], ap: f64, it: f64, mt: f64, ep: f64, phi: f64, dists: &[[f64; 278]; 278]) -> Annealer { 
         let mut rng: XorShiftRng = SeedableRng::from_seed(seed);
         rng.shuffle(&mut city_ids);
-        let s = Solution::new(city_ids, dists);
+        let sd = seed[0];
+        let s = Solution::new(city_ids, dists, sd);
         let mut anneal = Annealer {
             batch_size: bs,
             rng: rng,
@@ -28,7 +29,7 @@ impl<'a> Annealer<'a> {
             init_temp: it,
             min_temp: mt,
             e_p: ep,
-            phi: phi
+            phi: phi,
         };
         anneal.init_temp = anneal.initial_temperature(it);
         anneal
