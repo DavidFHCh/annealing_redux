@@ -1,5 +1,5 @@
 extern crate annealing_redux;
-extern crate config; 
+extern crate config;
 
 use config::{Config, File, FileFormat, Value};
 use annealing_redux as ar;
@@ -16,12 +16,11 @@ fn main() {
     }
 }
 
-fn from_config<'a>(dists: &'a [[f64; 278]; 278]) -> Vec<Annealer<'a>> {
+fn from_config<'a>(dists: &'a Vec<Vec<f64>>) -> Vec<Annealer<'a>> {
     let mut c = Config::new();
-    c.merge(File::new("Settings", FileFormat::Toml)
-     .required(true))
-     .expect("No Configuration File 'Settings.toml'");
-    
+    c.merge(File::new("Settings", FileFormat::Toml).required(true))
+        .expect("No Configuration File 'Settings.toml'");
+
     let ids: Vec<u16> = to_u16_vec(c.get_array("city_ids").unwrap());
     let bs: u32 = c.get_int("batch_size").unwrap() as u32;
     let seeds: Vec<u32> = to_u32_vec(c.get_array("seeds").unwrap());
@@ -34,16 +33,16 @@ fn from_config<'a>(dists: &'a [[f64; 278]; 278]) -> Vec<Annealer<'a>> {
 
     for seed in seeds {
         let an = Annealer::new(
-                ids.clone(),
-                bs,
-                [seed, seed*7, seed*23, seed*69],
-                ap,
-                it,
-                mt,
-                ep,
-                phi,
-                &dists
-            );
+            ids.clone(),
+            bs,
+            [seed, seed * 7, seed * 23, seed * 69],
+            ap,
+            it,
+            mt,
+            ep,
+            phi,
+            &dists,
+        );
         annealers.push(an);
     }
     annealers
