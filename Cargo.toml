@@ -11,6 +11,10 @@ path = "src/lib.rs"
 name = "annealing_redux_bin"
 path = "src/main.rs"
 
+[[bin]]
+name = "analyzer_bin"
+path = "src/analyzer.rs"
+
 [dependencies]
 rusqlite = "0.10.0"
 rand = "0.3.15"

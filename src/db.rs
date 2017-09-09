@@ -13,7 +13,6 @@ pub fn make_cities() -> Result<Vec<Vec<f64>>, rusqlite::Error> {
     let conn = Connection::open(db_path).unwrap();
     let total_cities: u32 = conn.query_row("select count(id) from cities", &[], |row| row.get(0))
         .expect("Error al preparar conexión para obtener total de ciudades");
-    println!("{}", total_cities);
     let t_c = (total_cities + 1) as usize;
     let mut cities: Vec<Vec<f64>> = vec![vec![-1.0; t_c]; t_c];
     let mut stmt = conn.prepare("select id_city_1, id_city_2, distance from connections")
