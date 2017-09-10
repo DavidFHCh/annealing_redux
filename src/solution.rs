@@ -3,9 +3,9 @@ extern crate rand;
 use self::rand::Rng;
 use std;
 use std::fmt;
-use std::rc::Rc;
+use std::sync::Arc;
 
-pub type DistMatrix = Rc<Vec<Vec<f64>>>;
+pub type DistMatrix = Arc<Vec<Vec<f64>>>;
 
 #[derive(Clone)]
 pub struct Solution {

@@ -5,10 +5,10 @@ use config::{Config, File, FileFormat, Value};
 use annealing_redux as ar;
 use ar::db::make_cities;
 use ar::solution::{DistMatrix, Solution};
-use std::rc::Rc;
+use std::sync::Arc;
 
 fn main() {
-    let dists = Rc::new(make_cities().unwrap());
+    let dists = Arc::new(make_cities().unwrap());
     let mut c = Config::new();
     c.merge(File::new("Analyze", FileFormat::Toml).required(true))
         .expect("NO CONFIGURATION FILE 'Analyze.toml'");
