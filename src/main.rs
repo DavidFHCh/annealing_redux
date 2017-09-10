@@ -10,13 +10,13 @@ use ar::solution::Solution;
 fn main() {
     let dists = make_cities().unwrap();
     let annealers = from_config(&dists);
-    for mut annealer in annealers {
+    for (mut annealer, seed) in annealers {
         let solutions = annealer.threshold_accepting();
-        println!("{}", solutions[solutions.len() - 1]);
+        println!("{}\t\tseed:{}", solutions[solutions.len() - 1], seed);
     }
 }
 
-fn from_config<'a>(dists: &'a Vec<Vec<f64>>) -> Vec<Annealer<'a>> {
+fn from_config<'a>(dists: &'a Vec<Vec<f64>>) -> Vec<(Annealer<'a>, u32)> {
     let mut c = Config::new();
     c.merge(File::new("Settings", FileFormat::Toml).required(true))
         .expect("No Configuration File 'Settings.toml'");
@@ -43,7 +43,7 @@ fn from_config<'a>(dists: &'a Vec<Vec<f64>>) -> Vec<Annealer<'a>> {
             phi,
             &dists,
         );
-        annealers.push(an);
+        annealers.push((an, seed));
     }
     annealers
 }
