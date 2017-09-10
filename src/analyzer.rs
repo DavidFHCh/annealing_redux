@@ -4,10 +4,11 @@ extern crate config;
 use config::{Config, File, FileFormat, Value};
 use annealing_redux as ar;
 use ar::db::make_cities;
-use ar::solution::Solution;
+use ar::solution::{DistMatrix, Solution};
+use std::rc::Rc;
 
 fn main() {
-    let dists = make_cities().unwrap();
+    let dists = Rc::new(make_cities().unwrap());
     let mut c = Config::new();
     c.merge(File::new("Analyze", FileFormat::Toml).required(true))
         .expect("NO CONFIGURATION FILE 'Analyze.toml'");
@@ -16,7 +17,7 @@ fn main() {
 
     for solution in solutions {
         let city_ids = to_u16_vec(solution.into_array().unwrap());
-        analyze(city_ids, &dists);
+        analyze(city_ids, dists.clone());
     }
 }
 
@@ -28,7 +29,7 @@ fn to_u16_vec(values: Vec<Value>) -> Vec<u16> {
     v
 }
 
-fn analyze(city_ids: Vec<u16>, dists: &Vec<Vec<f64>>) {
+fn analyze(city_ids: Vec<u16>, dists: DistMatrix) {
     let sol = Solution::new(city_ids, dists);
     println!("{}", sol);
 }

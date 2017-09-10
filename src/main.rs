@@ -5,18 +5,19 @@ use config::{Config, File, FileFormat, Value};
 use annealing_redux as ar;
 use ar::db::make_cities;
 use ar::annealing::Annealer;
-use ar::solution::Solution;
+use ar::solution::DistMatrix;
+use std::rc::Rc;
 
 fn main() {
-    let dists = make_cities().unwrap();
-    let annealers = from_config(&dists);
+    let dists = Rc::new(make_cities().unwrap());
+    let annealers = from_config(dists);
     for (mut annealer, seed) in annealers {
         let solutions = annealer.threshold_accepting();
         println!("{}\t\tseed:{}", solutions[solutions.len() - 1], seed);
     }
 }
 
-fn from_config<'a>(dists: &'a Vec<Vec<f64>>) -> Vec<(Annealer<'a>, u32)> {
+fn from_config(dists: DistMatrix) -> Vec<(Annealer, u32)> {
     let mut c = Config::new();
     c.merge(File::new("Settings", FileFormat::Toml).required(true))
         .expect("No Configuration File 'Settings.toml'");
@@ -41,7 +42,7 @@ fn from_config<'a>(dists: &'a Vec<Vec<f64>>) -> Vec<(Annealer<'a>, u32)> {
             mt,
             ep,
             phi,
-            &dists,
+            dists.clone(),
         );
         annealers.push((an, seed));
     }

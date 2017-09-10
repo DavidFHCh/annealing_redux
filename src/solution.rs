@@ -3,18 +3,21 @@ extern crate rand;
 use self::rand::Rng;
 use std;
 use std::fmt;
+use std::rc::Rc;
+
+pub type DistMatrix = Rc<Vec<Vec<f64>>>;
 
 #[derive(Clone)]
-pub struct Solution<'a> {
+pub struct Solution {
     pub path: Vec<u16>,
     pub cost: f64,
     pub avg_d: f64,
     pub max_d: f64,
-    pub dists: &'a Vec<Vec<f64>>,
+    pub dists: DistMatrix,
 }
 
-impl<'a> Solution<'a> {
-    pub fn new(path: Vec<u16>, dist: &Vec<Vec<f64>>) -> Solution {
+impl Solution {
+    pub fn new(path: Vec<u16>, dist: DistMatrix) -> Solution {
         let mut s = Solution {
             path: path,
             cost: 0.0,
@@ -30,7 +33,7 @@ impl<'a> Solution<'a> {
         s
     }
 
-    pub fn neighbor<T: Rng>(&self, rng: &mut T) -> Solution<'a> {
+    pub fn neighbor<T: Rng>(&self, rng: &mut T) -> Solution {
         let (path_new, i, j) = Solution::swap(self.path.clone(), rng);
         let new_c = self.new_cost(i, j);
 
@@ -39,7 +42,7 @@ impl<'a> Solution<'a> {
             cost: new_c,
             avg_d: self.avg_d,
             max_d: self.max_d,
-            dists: self.dists,
+            dists: self.dists.clone(),
         }
     }
 
@@ -145,7 +148,7 @@ impl<'a> Solution<'a> {
     }
 }
 
-impl<'a> fmt::Display for Solution<'a> {
+impl fmt::Display for Solution {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,

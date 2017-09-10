@@ -1,20 +1,20 @@
 extern crate rand;
 
 use self::rand::{Rng, SeedableRng, XorShiftRng};
-use solution::Solution;
+use solution::{DistMatrix, Solution};
 
-pub struct Annealer<'a> {
+pub struct Annealer {
     batch_size: u32,
     rng: XorShiftRng,
     accepted_percent: f64,
-    s_init: Solution<'a>,
+    s_init: Solution,
     init_temp: f64,
     min_temp: f64,
     e_p: f64,
     phi: f64,
 }
 
-impl<'a> Annealer<'a> {
+impl Annealer {
     pub fn new(
         mut city_ids: Vec<u16>,
         bs: u32,
@@ -24,7 +24,7 @@ impl<'a> Annealer<'a> {
         mt: f64,
         ep: f64,
         phi: f64,
-        dists: &Vec<Vec<f64>>,
+        dists: DistMatrix,
     ) -> Annealer {
         let mut rng: XorShiftRng = SeedableRng::from_seed(seed);
         rng.shuffle(&mut city_ids);
@@ -78,7 +78,7 @@ impl<'a> Annealer<'a> {
         solutions
     }
 
-    fn make_batch(&mut self, mut s: Solution<'a>, t: f64) -> (f64, Solution<'a>, Solution<'a>) {
+    fn make_batch(&mut self, mut s: Solution, t: f64) -> (f64, Solution, Solution) {
         let mut c = 0;
         let mut r = 0.0;
         let mut tries = 0;
