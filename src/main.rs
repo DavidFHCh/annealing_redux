@@ -1,33 +1,26 @@
 extern crate annealing_redux;
 extern crate config;
+extern crate threadpool;
 
 use config::{Config, File, FileFormat, Value};
+use threadpool::ThreadPool;
 use annealing_redux as ar;
 use ar::db::make_cities;
 use ar::annealing::Annealer;
 use ar::solution::DistMatrix;
 use std::sync::Arc;
-use std::thread;
 
 fn main() {
     let dists = Arc::new(make_cities().unwrap());
     let annealers = from_config(dists);
-    let mut children = vec![];
+    let pool = ThreadPool::new(4);
 
     for (mut annealer, seed) in annealers {
-        children.push(thread::spawn(move || {
+        pool.execute(move || {
             let solutions = annealer.threshold_accepting();
             println!("{}\t\tseed:{}", solutions[solutions.len() - 1], seed);
-        }));
+        });
     }
-    for child in children {
-        child.join().expect("Error while joining child");
-    }
-}
-
-fn begin_annealer(annealer: &mut Annealer, seed: u32) {
-    let solutions = annealer.threshold_accepting();
-    println!("{}\t\tseed:{}", solutions[solutions.len() - 1], seed)
 }
 
 fn from_config(dists: DistMatrix) -> Vec<(Annealer, u32)> {

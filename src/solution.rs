@@ -152,7 +152,8 @@ impl fmt::Display for Solution {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{:?}\n cost:{} \tfeasible: {}",
+            "{:.*?}\n cost:{} \tfeasible: {}",
+            7,
             self.path,
             self.cost,
             self.feasible()

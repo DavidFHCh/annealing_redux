@@ -1,0 +1,11 @@
+[package]
+name = "threadpool"
+version = "0.1.0"
+authors = ["Diego Carrillo <dailexgo@gmail.com>"]
+
+[lib]
+name = "threadpool"
+path = "src/lib.rs"
+
+
+[dependencies]

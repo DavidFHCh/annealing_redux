@@ -63,12 +63,12 @@ impl Annealer {
                 if sb.cost < s_best.cost {
                     s_best = sb;
                 }
-                println!(
-                    "cost: {:.8?} \ttemp:{:.8?} \tcost_diff: {:.8?}",
-                    s.cost,
-                    t,
-                    (p - p_new).abs()
-                );
+                //println!(
+                //    "cost: {:.8?} \ttemp:{:.8?} \tcost_diff: {:.8?}",
+                //    s.cost,
+                //    t,
+                //    (p - p_new).abs()
+                //);
                 solutions.push(s.clone());
             }
             t *= self.phi;

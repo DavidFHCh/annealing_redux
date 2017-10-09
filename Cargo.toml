@@ -19,3 +19,4 @@ path = "src/analyzer.rs"
 rusqlite = "0.10.0"
 rand = "0.3.15"
 config = { git = "https://github.com/mehcode/config-rs" }
+threadpool = { path = "threadpool" }
